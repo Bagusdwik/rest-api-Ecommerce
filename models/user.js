@@ -97,5 +97,9 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User",
     }
   );
+
+  User.beforeCreate((user, _) => {
+    if (!user.role) user.role = "customer";
+  });
   return User;
 };

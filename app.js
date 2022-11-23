@@ -1,12 +1,9 @@
 const express = require("express");
 const app = express();
+const userRoute = require("./routes/users.route");
 require("dotenv").config();
 
-app.get("/", (req, res) => {
-  res.send({
-    status: "success",
-  });
-});
+app.use("/users", userRoute);
 
 const PORT = process.env.PORT || 3000;
 
