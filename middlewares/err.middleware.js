@@ -1,4 +1,4 @@
-const AppError = require("../utils/app-error");
+const AppError = require("../utils/app.error.middleware");
 
 const errorResponse = (err, res) => {
   res.status(err.statusCode).send({
@@ -8,9 +8,7 @@ const errorResponse = (err, res) => {
 };
 
 const validationError = (err) => {
-  const errors = Object.values(err.errors).map(
-    (value) => `[${value.message} ${value.value}]`
-  );
+  const errors = Object.values(err.errors).map((value) => `[${value.message}]`);
   return new AppError(errors, 400);
 };
 
@@ -38,7 +36,6 @@ const uniqueError = (err) => {
 function errMiddleware(err, req, res, next) {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "Error";
-  console.log(err.name);
 
   let error = Object.assign(err);
   if (err.name === "SequelizeValidationError") {
