@@ -10,17 +10,17 @@ async function authMiddleware(req, res, next) {
 
     const result = jwt.verify(token[1], process.env.JWT_TOKEN);
 
-    const resultData = await User.findAll({
-      where: {
-        id: "4d761d84-82fd-4bcf-b723-0b4aa8615969",
-      },
-    });
-    console.log(resultData);
-    if (resultData.length === 0) {
-      throw { name: "JWT Error", message: "Token invalid" };
-    }
+    // const resultData = await User.findAll({
+    //   where: {
+    //     id: "4d761d84-82fd-4bcf-b723-0b4aa8615969",
+    //   },
+    // });
+    // console.log(resultData);
+    // if (resultData.length === 0) {
+    //   throw { name: "JWT Error", message: "Token invalid" };
+    // }
 
-    req.user = { id: result.id, email: result.email };
+    req.user = { id: result.id, email: result.email, role: result.role };
     next();
   } catch (err) {
     next(new AppError(err.message, 403));

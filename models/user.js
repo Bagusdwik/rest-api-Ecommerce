@@ -1,6 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 const { v4: uuidv4 } = require("uuid");
+const hash = require("../utils/hash.bcrypt");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -109,6 +110,8 @@ module.exports = (sequelize, DataTypes) => {
     user.balance = 0;
     user.createdAt = new Date();
     user.updatedAt = new Date();
+    user.password = hash(user.password);
+    console.log(user.password);
 
     if (!user.role) user.role = "customer";
   });
