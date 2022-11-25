@@ -46,3 +46,11 @@ exports.loginUser = catchAsync(async (req, res, next) => {
     token,
   });
 });
+
+exports.updateUser = catchAsync(async (req, res, next) => {
+  console.log(req.user);
+
+  res.send({
+    status: "success",
+  });
+});
