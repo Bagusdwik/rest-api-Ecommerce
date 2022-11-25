@@ -48,9 +48,24 @@ exports.loginUser = catchAsync(async (req, res, next) => {
 });
 
 exports.updateUser = catchAsync(async (req, res, next) => {
-  console.log(req.user);
+  const { id } = req.user;
+  const { userId } = req.params;
+  if (id !== userId)
+    return next(new AppError("Id does not match with Token", 403));
+
+  const result = await User.update(req.body, {
+    where: {
+      id,
+    },
+    returning: true,
+    individualsHooks: true,
+  });
 
   res.send({
     status: "success",
+    message: "data has beeen updated",
+    data: {
+      user: result[1][0],
+    },
   });
 });
