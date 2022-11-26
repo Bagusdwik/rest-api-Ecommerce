@@ -51,7 +51,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
   const { id } = req.user;
   const { userId } = req.params;
   if (id !== userId)
-    return next(new AppError("Id does not match with Token", 403));
+    return next(new AppError("Id does not match with token", 403));
 
   const result = await User.update(req.body, {
     where: {
@@ -67,5 +67,24 @@ exports.updateUser = catchAsync(async (req, res, next) => {
     data: {
       user: result[1][0],
     },
+  });
+});
+
+exports.deleteUser = catchAsync(async (req, res, next) => {
+  const { id } = req.user;
+  const { userId } = req.params;
+  if (id !== userId)
+    return next(new AppError("Id does not match with token", 403));
+
+  const result = await User.destroy({
+    where: {
+      id,
+    },
+  });
+  if (!result) return next(new AppError("Data user is already deleted", 400));
+
+  res.send({
+    status: "success",
+    message: "Your account has ben successfully deleted",
   });
 });

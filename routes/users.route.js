@@ -3,7 +3,10 @@ const authMiddleware = require("../middlewares/auth.middleware");
 
 const userController = require("../controllers/users.controller");
 
-router.route("/:userId").put(authMiddleware, userController.updateUser);
+router
+  .route("/:userId")
+  .put(authMiddleware, userController.updateUser)
+  .delete(authMiddleware, userController.deleteUser);
 
 router.route("/register").post(userController.createUser);
 router.route("/login").post(userController.loginUser);
