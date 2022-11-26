@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Category extends Model {
+  class Product extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,43 +9,41 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.User);
     }
   }
-  Category.init(
+  Product.init(
     {
-      type: {
+      title: {
         type: DataTypes.STRING,
         allowNull: {
-          msg: "Type cannot be empty",
+          msg: "Title cannot be null",
           args: false,
-        },
-        validate: {
-          notEmpty: {
-            msg: "Type cannot be empty string",
-            args: true,
-          },
         },
       },
-      sold_product_amount: {
+      price: DataTypes.INTEGER,
+      stock: {
         type: DataTypes.INTEGER,
         allowNull: {
-          msg: "Sold product amount cannot be empty",
           args: false,
+          msg: "Stock cannot be empty",
         },
         validate: {
           isInt: {
-            msg: "Amount must be an integer",
+            msg: "Stock must be an integer",
             args: true,
+          },
+          min: {
+            args: 5,
+            msg: "Stock must be higher than 5 ",
           },
         },
       },
-      UserId: DataTypes.UUID,
+      CategoryId: DataTypes.UUID,
     },
     {
       sequelize,
-      modelName: "Category",
+      modelName: "Product",
     }
   );
-  return Category;
+  return Product;
 };
