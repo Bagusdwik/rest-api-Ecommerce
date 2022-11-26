@@ -58,7 +58,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
       id,
     },
     returning: true,
-    individualsHooks: true,
+    individualHooks: true,
   });
 
   res.send({
@@ -86,5 +86,28 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
   res.send({
     status: "success",
     message: "Your account has ben successfully deleted",
+  });
+});
+
+exports.updateBalance = catchAsync(async (req, res, next) => {
+  const { balance } = req.body;
+  const { id } = req.user;
+
+  const result = await User.update(
+    { balance },
+    {
+      where: {
+        id,
+      },
+      returning: true,
+      individualHooks: true,
+    }
+  );
+  res.send({
+    status: "success",
+    message: `Your balance has been successfully updated to Rp`,
+    data: {
+      user: result,
+    },
   });
 });

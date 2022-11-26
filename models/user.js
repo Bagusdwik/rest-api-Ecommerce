@@ -115,5 +115,15 @@ module.exports = (sequelize, DataTypes) => {
 
     if (!user.role) user.role = "customer";
   });
+
+  User.beforeUpdate(async (user, options) => {
+    //dapetin data yang req.body nya???
+    //previous data value
+
+    if (options.fields.includes("balance")) {
+      const previousBalance = user._previousDataValues.balance;
+      user.balance = user.balance + previousBalance;
+    }
+  });
   return User;
 };
