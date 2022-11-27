@@ -33,10 +33,22 @@ const uniqueError = (err) => {
   return new AppError(err.message, 400);
 };
 
+const constraintErrorDB = (err) => {
+  const message =
+    "There's no suitable connection between this user and category";
+
+  return new AppError(message, 404);
+};
+
 function errMiddleware(err, req, res, next) {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "Error";
   let error = Object.assign(err);
+
+  if (err.name === "SequelizeForeignKeyConstraintError") {
+    error = constraintErrorDB(error);
+  }
+
   if (err.name === "SequelizeValidationError") {
     error = validationError(error);
   }

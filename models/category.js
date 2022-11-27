@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { v4: uuidv4 } = require("uuid");
 module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     /**
@@ -10,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.User);
+      this.hasMany(models.Product);
     }
   }
   Category.init(
@@ -47,5 +49,11 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Category",
     }
   );
+
+  Category.beforeCreate((category, _) => {
+    category.id = uuidv4();
+    category.sold_product_amount = 0;
+  });
+
   return Category;
 };
