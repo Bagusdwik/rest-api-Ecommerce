@@ -20,12 +20,31 @@ module.exports = (sequelize, DataTypes) => {
           args: false,
         },
       },
-      price: DataTypes.INTEGER,
+      price: {
+        type: DataTypes.INTEGER,
+        allowNull: {
+          args: "Price cannot be null",
+        },
+        validate: {
+          isInt: {
+            args: true,
+            msg: "Price should be an integer",
+          },
+          min: {
+            args: 1,
+            msg: "Price should be higher than 0",
+          },
+          max: {
+            args: 50000000,
+            msg: "Price should be lower than 50 million",
+          },
+        },
+      },
       stock: {
         type: DataTypes.INTEGER,
         allowNull: {
           args: false,
-          msg: "Stock cannot be empty",
+          msg: "Stock cannot be null",
         },
         validate: {
           isInt: {
