@@ -5,6 +5,11 @@ const adminMiddleware = require("../middlewares/admin.middleware");
 router
   .route("/")
   .post(cateController.insertCategories)
-  .get(cateController.getProducts);
+  .get(cateController.getCategories);
+
+router
+  .route("/:categoryId")
+  .patch(cateController.patchCategory)
+  .delete(cateController.deleteCategory);
 
 module.exports = router;

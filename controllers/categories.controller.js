@@ -14,15 +14,61 @@ exports.insertCategories = catchAsync(async (req, res, next) => {
     },
   });
 
-  res.send({
+  res.status(201).send({
     status: "success",
+    statusCode: "201 Created",
     data: {
       Category: result,
     },
   });
 });
 
-exports.getProducts = catchAsync(async (req, res, next) => {
+exports.patchCategory = catchAsync(async (req, res, next) => {
+  const { type } = req.body;
+  const { id } = req.user;
+  const { categoryId } = req.params;
+
+  const result = await Category.update(
+    { type },
+    {
+      where: {
+        UserId: id,
+        id: categoryId,
+      },
+      returning: true,
+      individualHooks: true,
+    }
+  );
+
+  res.send({
+    status: "success",
+    statusCode: "200 OK",
+    data: {
+      Category: result,
+    },
+  });
+});
+
+exports.deleteCategory = catchAsync(async (req, res, next) => {
+  const { id } = req.user;
+  const { categoryId } = req.params;
+
+  const result = await Category.destroy({
+    where: {
+      UserId: id,
+      id: categoryId,
+    },
+  });
+  if (!result) return next(new AppError("Category is already deleted", 400));
+
+  res.send({
+    status: "success",
+    statusCode: "200 OK",
+    message: "Category has been deleted successfully",
+  });
+});
+
+exports.getCategories = catchAsync(async (req, res, next) => {
   const { id } = req.user;
   const result = await Category.findAll({
     where: {
@@ -33,6 +79,7 @@ exports.getProducts = catchAsync(async (req, res, next) => {
 
   res.send({
     status: "success",
+    statusCode: "200 OK",
     data: result,
   });
 });

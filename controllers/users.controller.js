@@ -15,8 +15,9 @@ exports.createUser = catchAsync(async (req, res) => {
 
   data.balance = formatter.format(data.balance);
 
-  res.send({
+  res.status(201).send({
     status: "success",
+    statusCode: "201 Created",
     data: {
       user: data,
     },
@@ -43,6 +44,7 @@ exports.loginUser = catchAsync(async (req, res, next) => {
 
   res.send({
     status: "success",
+    statusCode: "200 OK",
     token,
   });
 });
@@ -63,6 +65,7 @@ exports.updateUser = catchAsync(async (req, res, next) => {
 
   res.send({
     status: "success",
+    statusCode: "200 OK",
     message: "data has beeen updated",
     data: {
       user: result[1][0],
@@ -85,6 +88,7 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
 
   res.send({
     status: "success",
+    statusCode: "200 OK",
     message: "Your account has ben successfully deleted",
   });
 });
@@ -105,6 +109,7 @@ exports.updateBalance = catchAsync(async (req, res, next) => {
   );
   res.send({
     status: "success",
+    statusCode: "200 OK",
     message: `Your balance has been successfully updated to Rp`,
     data: {
       user: result,
