@@ -6,7 +6,7 @@ const { Category, Product } = require("../models/index");
 
 exports.insertCategories = catchAsync(async (req, res, next) => {
   const { id } = req.user;
-  req.body.UserId = "4c3373fb-e944-4f44-ac4b-a25ae43ad4a9";
+  req.body.UserId = id;
 
   const result = await Category.create(req.body, {
     where: {

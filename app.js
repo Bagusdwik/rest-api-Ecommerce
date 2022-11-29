@@ -1,9 +1,15 @@
 const express = require("express");
 const app = express();
-const userRoute = require("./routes/users.route");
+
+//Routes Middleware
 const errorMiddleware = require("./middlewares/err.middleware");
-const categoriesRoute = require("./routes/categories.routes");
 const authMiddleware = require("./middlewares/auth.middleware");
+
+const categoriesRoute = require("./routes/categories.routes");
+const userRoute = require("./routes/users.route");
+const productRoute = require("./routes/products.routes");
+
+//Authentification & Authorization Middleware
 
 require("dotenv").config();
 
@@ -12,6 +18,7 @@ app.use(express.json());
 
 app.use("/users", userRoute);
 app.use("/categories", authMiddleware, categoriesRoute);
+app.use("/products", authMiddleware, productRoute);
 
 app.use(errorMiddleware);
 
