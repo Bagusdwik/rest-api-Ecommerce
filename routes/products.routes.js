@@ -12,6 +12,7 @@ router
 router
   .route("/:prodId")
   .put(adminMiddleware, productController.updateProductt)
-  .delete(adminMiddleware, productController.deleteProduct);
+  .delete(adminMiddleware, productController.deleteProduct)
+  .patch(adminMiddleware, productController.updateProductCategoryID);
 
 module.exports = router;

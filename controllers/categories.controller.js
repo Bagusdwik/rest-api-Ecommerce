@@ -59,7 +59,8 @@ exports.deleteCategory = catchAsync(async (req, res, next) => {
       id: categoryId,
     },
   });
-  if (!result) return next(new AppError("Category is already deleted", 400));
+  if (!result)
+    return next(new AppError(`Invalid ID(${categoryId}). Data not found`, 404));
 
   res.send({
     status: "success",

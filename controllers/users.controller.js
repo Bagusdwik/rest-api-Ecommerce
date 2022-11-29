@@ -3,13 +3,17 @@ const { User } = require("../models/index");
 const AppError = require("../utils/app.error.middleware");
 const compareHash = require("../utils/validate.hash");
 const jwt = require("jsonwebtoken");
-const formatCurrency = require("../utils/currency.formatter");
+
+const formatter = new Intl.NumberFormat("id-ID", {
+  style: "currency",
+  currency: "IDR",
+});
 
 exports.createUser = catchAsync(async (req, res) => {
   const result = await User.create(req.body);
   const { role, password, updatedAt, ...data } = result.dataValues;
 
-  data.balance = formatCurrency(data.balance);
+  data.balance = formatter.format(data.balance);
 
   res.status(201).send({
     status: "success",

@@ -5,14 +5,13 @@ const currencyFormatter = require("../utils/currency.formatter");
 
 exports.getAllProducts = catchAsync(async (req, res, next) => {
   const result = await Product.findAll();
+  const dataProducts = currencyFormatter(result);
 
-  result[0].dataValues.price = currencyFormatter(result[0].dataValues.price);
-  console.log(result.price);
   res.send({
     status: "success",
     statusCode: "200 OK",
     data: {
-      Products: result,
+      Products: dataProducts,
     },
   });
 });
@@ -48,13 +47,35 @@ exports.updateProductt = catchAsync(async (req, res, next) => {
 
 exports.deleteProduct = catchAsync(async (req, res, next) => {
   const { prodId } = req.params;
-  await Product.destroy({
+  const result = await Product.destroy({
     where: {
       id: prodId,
     },
   });
 
+  if (result === 0)
+    return next(new AppError(`Invalid ID(${prodId}). Data not found`, 404));
+
   res.send({
     status: "success",
+  });
+});
+
+exports.updateProductCategoryID = catchAsync(async (req, res, next) => {
+  const { prodId } = req.params;
+
+  const result = await Product.update(req.body, {
+    where: {
+      id: prodId,
+    },
+    returning: true,
+    individualHooks: true,
+  });
+
+  res.send({
+    status: "success",
+    data: {
+      Product: result,
+    },
   });
 });

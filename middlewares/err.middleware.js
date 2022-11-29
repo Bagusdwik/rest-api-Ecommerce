@@ -34,8 +34,7 @@ const uniqueError = (err) => {
 };
 
 const constraintErrorDB = (err) => {
-  const message =
-    "There's no suitable connection between this user and category";
+  const message = "There's no suitable references ID";
 
   return new AppError(message, 404);
 };
