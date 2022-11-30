@@ -5,7 +5,7 @@ function adminMiddleware(req, res, next) {
     const { role } = req.user;
 
     //TODO: change the role to admin
-    if (role !== "customer")
+    if (role === "customer")
       return next(new AppError("Only admin can access this route", 403));
     next();
   } catch {

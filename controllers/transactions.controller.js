@@ -7,17 +7,6 @@ const formatter = new Intl.NumberFormat("id-ID", {
   currency: "IDR",
 });
 
-exports.getAllTransactions = catchAsync(async (req, res, next) => {
-  const result = await TransactionHistory.findAll();
-
-  res.send({
-    status: "success",
-    statusCode: "200 OK",
-    data: {
-      TransactionHistory: result,
-    },
-  });
-});
 exports.createTransactions = catchAsync(async (req, res, next) => {
   req.body.UserId = req.user.id;
 
