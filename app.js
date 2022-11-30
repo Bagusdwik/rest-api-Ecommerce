@@ -8,6 +8,7 @@ const authMiddleware = require("./middlewares/auth.middleware");
 const categoriesRoute = require("./routes/categories.routes");
 const userRoute = require("./routes/users.route");
 const productRoute = require("./routes/products.routes");
+const transactionsRoute = require("./routes/transactions.route");
 
 //Authentification & Authorization Middleware
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/users", userRoute);
 app.use("/categories", authMiddleware, categoriesRoute);
 app.use("/products", authMiddleware, productRoute);
+app.use("/transactions", authMiddleware, transactionsRoute);
 
 app.use(errorMiddleware);
 

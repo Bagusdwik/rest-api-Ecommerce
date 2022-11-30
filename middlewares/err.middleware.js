@@ -43,7 +43,7 @@ function errMiddleware(err, req, res, next) {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "Error";
   let error = Object.assign(err);
-
+  console.log(err);
   if (err.name === "SequelizeForeignKeyConstraintError") {
     error = constraintErrorDB(error);
   }

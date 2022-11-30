@@ -10,9 +10,21 @@ module.exports = {
       },
       ProductId: {
         type: Sequelize.UUID,
+        references: {
+          model: "Products",
+          key: "id",
+        },
+        onUpdate: "cascade",
+        onDelete: "cascade",
       },
       UserId: {
         type: Sequelize.UUID,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onUpdate: "cascade",
+        onDelete: "cascade",
       },
       quantity: {
         type: Sequelize.INTEGER,
