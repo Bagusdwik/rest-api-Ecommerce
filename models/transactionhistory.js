@@ -72,14 +72,58 @@ module.exports = (sequelize, DataTypes) => {
         id: th.ProductId,
       },
     });
+
+    const resultCategory = await sequelize.models.Category.findOne({
+      where: {
+        UserId: th.UserId,
+      },
+    });
+
     const { stock, price } = result.dataValues;
     const { balance } = resultUser.dataValues;
+    const { sold_product_amount: soldAmount } = resultCategory.dataValues;
 
-    if (balance < price) throw new AppError("insufficient balance", 403);
+    th.total_price = price * th.quantity;
+    if (balance < th.total_price)
+      throw new AppError("insufficient balance", 403);
 
     if (th.quantity > stock)
       throw new AppError("quantity exceeds the limit", 403);
 
+    const newStock = stock - th.quantity;
+    const newBalance = balance - price * th.quantity;
+    // console.log(stock, newStock);
+
+    await sequelize.models.Category.update(
+      { sold_product_amount: th.quantity + soldAmount },
+      {
+        where: {
+          UserId: th.UserId,
+        },
+        individualHooks: true,
+      }
+    );
+    await sequelize.models.Product.update(
+      { stock: newStock },
+      {
+        where: {
+          id: th.ProductId,
+        },
+        individualHooks: true,
+        skip: ["stock"],
+      }
+    );
+
+    await sequelize.models.User.update(
+      {
+        balance: newBalance,
+      },
+      {
+        where: {
+          id: th.UserId,
+        },
+      }
+    );
     th.id = uuidv4();
   });
 
