@@ -1,6 +1,5 @@
 const catchAsync = require("../utils/catch.promise");
 const { TransactionHistory, Product, User } = require("../models/index");
-const { reset } = require("nodemon");
 
 const formatter = new Intl.NumberFormat("id-ID", {
   style: "currency",

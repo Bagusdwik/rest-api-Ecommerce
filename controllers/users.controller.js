@@ -63,12 +63,14 @@ exports.updateUser = catchAsync(async (req, res, next) => {
     individualHooks: true,
   });
 
+  const { gender, role, balance, password, ...data } = result[1][0].dataValues;
+
   res.send({
     status: "success",
     statusCode: "200 OK",
     message: "data has beeen updated",
     data: {
-      user: result[1][0],
+      user: data,
     },
   });
 });
