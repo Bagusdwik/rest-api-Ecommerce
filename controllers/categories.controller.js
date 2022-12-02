@@ -72,9 +72,6 @@ exports.deleteCategory = catchAsync(async (req, res, next) => {
 exports.getCategories = catchAsync(async (req, res, next) => {
   const { id } = req.user;
   const result = await Category.findAll({
-    where: {
-      UserId: id,
-    },
     include: Product,
   });
 
