@@ -4,7 +4,7 @@ const app = express();
 const cateController = require("../controllers/categories.controller");
 const adminMiddleware = require("../middlewares/admin.middleware");
 
-app.use(adminMiddleware);
+router.use(adminMiddleware);
 
 router
   .route("/")
